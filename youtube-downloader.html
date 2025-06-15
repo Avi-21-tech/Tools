@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free YouTube video downloader - Download videos in MP4, MP3, and other formats with quality options. Fast, secure, and easy to use.">
+    <title>YouTube Video Downloader | Free MP4, MP3 Converter</title>
+    <style>
+        :root {
+            --primary-color: #ff0000;
+            --secondary-color: #282828;
+            --accent-color: #f1f1f1;
+            --text-color: #333333;
+            --light-text: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--light-text);
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .download-form {
+            background-color: var(--light-text);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 30px auto;
+            position: relative;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .input-group {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .input-group input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+        
+        .input-group button {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            border: none;
+            padding: 0 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .input-group button:hover {
+            background-color: #cc0000;
+        }
+        
+        .options-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .option-card {
+            flex: 1;
+            min-width: 150px;
+            background-color: var(--accent-color);
+            border-radius: 5px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+        
+        .option-card.active {
+            border-color: var(--primary-color);
+            background-color: rgba(255, 0, 0, 0.1);
+        }
+        
+        .option-card h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .download-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .download-btn:hover {
+            background-color: #cc0000;
+        }
+        
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            margin: 20px auto;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .results {
+            display: none;
+            margin-top: 30px;
+            background-color: var(--light-text);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .thumbnail-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .thumbnail {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        
+        .video-info h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .quality-options {
+            margin-top: 20px;
+        }
+        
+        .quality-btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .quality-btn:hover {
+            background-color: #ddd;
+        }
+        
+        .quality-btn.active {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+        
+        .error-message {
+            color: #d32f2f;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .options-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="https://www.youtube.com/s/desktop/d743f786/img/favicon_48x48.png" alt="YouTube Downloader Logo">
+                    <h1>YouTube Downloader</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="download-form">
+            <div class="form-group">
+                <label for="video-url">Enter YouTube Video URL:</label>
+                <div class="input-group">
+                    <input type="text" id="video-url" placeholder="https://www.youtube.com/watch?v=..." required>
+                    <button id="fetch-btn">Fetch</button>
+                </div>
+                <div class="error-message" id="url-error"></div>
+            </div>
+            
+            <div class="options-group">
+                <div class="option-card active" data-format="mp4">
+                    <h3>MP4 Video</h3>
+                    <p>High quality video with audio</p>
+                </div>
+                <div class="option-card" data-format="mp3">
+                    <h3>MP3 Audio</h3>
+                    <p>Audio only, perfect for music</p>
+                </div>
+            </div>
+            
+            <div class="spinner" id="loading-spinner"></div>
+            
+            <div class="results" id="results-container">
+                <div class="thumbnail-container">
+                    <img id="video-thumbnail" class="thumbnail" src="" alt="Video Thumbnail">
+                </div>
+                <div class="video-info">
+                    <h3 id="video-title"></h3>
+                    <div class="quality-options" id="quality-options">
+                        <!-- Quality options will be inserted here dynamically -->
+                    </div>
+                </div>
+            </div>
+            
+            <button class="download-btn" id="download-btn" disabled>Download</button>
+            <div class="error-message" id="download-error"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Format selection
+        const formatCards = document.querySelectorAll('.option-card');
+        formatCards.forEach(card => {
+            card.addEventListener('click', function() {
+                formatCards.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                // If we already have results, update quality options for new format
+                if(document.getElementById('results-container').style.display === 'block') {
+                    updateQualityOptions();
+                }
+            });
+        });
+        
+        // Extract video ID from URL
+        function getVideoId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+        
+        // Validate YouTube URL
+        function isValidYouTubeUrl(url) {
+            return url.includes('youtube.com/watch?v=') || 
+                   url.includes('youtu.be/') || 
+                   url.includes('youtube.com/embed/');
+        }
+        
+        // Update quality options based on selected format
+        function updateQualityOptions() {
+            const selectedFormat = document.querySelector('.option-card.active').dataset.format;
+            const qualityOptionsContainer = document.getElementById('quality-options');
+            
+            // Clear previous options
+            qualityOptionsContainer.innerHTML = '<h4>Available Qualities:</h4>';
+            
+            // Define quality options for each format
+            const qualityOptions = {
+                mp4: [
+                    { quality: '1080p', size: '120MB' },
+                    { quality: '720p', size: '80MB' },
+                    { quality: '480p', size: '45MB' },
+                    { quality: '360p', size: '25MB' }
+                ],
+                mp3: [
+                    { quality: 'High (320kbps)', size: '12MB' },
+                    { quality: 'Medium (192kbps)', size: '8MB' },
+                    { quality: 'Low (128kbps)', size: '5MB' }
+                ]
+            };
+            
+            // Create quality buttons
+            qualityOptions[selectedFormat].forEach(option => {
+                const qualityBtn = document.createElement('div');
+                qualityBtn.className = 'quality-btn';
+                qualityBtn.innerHTML = `${option.quality} <small>(${option.size})</small>`;
+                
+                qualityBtn.addEventListener('click', function() {
+                    document.querySelectorAll('.quality-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    document.getElementById('download-btn').disabled = false;
+                    document.getElementById('download-error').style.display = 'none';
+                });
+                
+                qualityOptionsContainer.appendChild(qualityBtn);
+            });
+            
+            // Reset download button
+            document.getElementById('download-btn').disabled = true;
+        }
+        
+        // Fetch video info
+        document.getElementById('fetch-btn').addEventListener('click', function() {
+            const videoUrl = document.getElementById('video-url').value.trim();
+            const urlError = document.getElementById('url-error');
+            
+            // Reset errors
+            urlError.style.display = 'none';
+            document.getElementById('download-error').style.display = 'none';
+            
+            // Validate URL
+            if (!videoUrl) {
+                urlError.textContent = 'Please enter a YouTube video URL';
+                urlError.style.display = 'block';
+                return;
+            }
+            
+            if (!isValidYouTubeUrl(videoUrl)) {
+                urlError.textContent = 'Please enter a valid YouTube URL';
+                urlError.style.display = 'block';
+                return;
+            }
+            
+            // Show loading spinner
+            const spinner = document.getElementById('loading-spinner');
+            const resultsContainer = document.getElementById('results-container');
+            spinner.style.display = 'block';
+            resultsContainer.style.display = 'none';
+            
+            // Get video ID
+            const videoId = getVideoId(videoUrl);
+            
+            // Simulate API call with timeout
+            setTimeout(function() {
+                spinner.style.display = 'none';
+                
+                // Check if we got a valid video ID
+                if (!videoId) {
+                    urlError.textContent = 'Could not extract video ID from URL';
+                    urlError.style.display = 'block';
+                    return;
+                }
+                
+                // Set thumbnail (using YouTube's thumbnail service)
+                document.getElementById('video-thumbnail').src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+                
+                // For demo purposes, we'll use a generic title
+                // In a real app, you would get this from your backend API
+                document.getElementById('video-title').textContent = `Video ID: ${videoId}`;
+                
+                // Update quality options based on selected format
+                updateQualityOptions();
+                
+                // Show results
+                resultsContainer.style.display = 'block';
+            }, 1500); // Simulate API delay
+        });
+        
+        // Download button click
+        document.getElementById('download-btn').addEventListener('click', function() {
+            const selectedQuality = document.querySelector('.quality-btn.active');
+            const downloadError = document.getElementById('download-error');
+            
+            if (!selectedQuality) {
+                downloadError.textContent = 'Please select a quality option';
+                downloadError.style.display = 'block';
+                return;
+            }
+            
+            // Get selected format
+            const selectedFormat = document.querySelector('.option-card.active').dataset.format;
+            
+            // In a real app, this would redirect to your backend download endpoint
+            // For this demo, we'll just show an alert
+            alert(`Preparing ${selectedFormat.toUpperCase()} download in ${selectedQuality.textContent.trim()}...\n\nIn a real implementation, this would start the download.`);
+            
+            // Reset download button
+            this.disabled = true;
+        });
+    </script>
+</body>
+</html>
