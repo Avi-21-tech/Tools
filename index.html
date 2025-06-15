@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Social Media Video Downloader | SocialMediaVideoDownloader</title>
+    <meta name="description" content="Download videos from all social media platforms for free - Instagram, TikTok, YouTube, Facebook, Twitter and more">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            color: var(--accent);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(rgba(67, 97, 238, 0.9), rgba(63, 55, 201, 0.9)), url('https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80') no-repeat center center/cover;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 10px;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline:hover {
+            background-color: white;
+            color: var(--primary);
+        }
+        
+        /* Platforms Section */
+        .platforms {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .platform-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .platform-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent);
+        }
+        
+        .platform-icon {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(67, 97, 238, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .platform-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .platform-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            padding: 30px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            background-color: var(--light);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Trending Videos */
+        .trending {
+            padding: 80px 0;
+            background-color: #f5f7fa;
+        }
+        
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .video-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            height: 160px;
+            overflow: hidden;
+        }
+        
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.1);
+        }
+        
+        .video-platform {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-info h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .download-badge {
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #aaa;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--secondary);
+                padding: 20px;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .cta h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-cloud-download-alt"></i>
+                    <span>SocialMediaVideoDownloader</span>
+                </div>
+                <button class="mobile-menu-btn" id="menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#platforms"><i class="fas fa-th-large"></i> Platforms</a></li>
+                        <li><a href="#trending"><i class="fas fa-fire"></i> Trending</a></li>
+                        <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Download Videos from Any Social Media Platform</h1>
+            <p>Free, fast and easy to use video downloader for Instagram, TikTok, YouTube, Facebook and more</p>
+            
+            <div>
+                <a href="#platforms" class="btn"><i class="fas fa-download"></i> Start Downloading</a>
+                <a href="#how-it-works" class="btn btn-outline"><i class="fas fa-play-circle"></i> How It Works</a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="platforms" id="platforms">
+        <div class="container">
+            <div class="section-title">
+                <h2>Choose Your Platform</h2>
+                <p>Click on any platform to start downloading videos</p>
+            </div>
+            
+            <div class="platforms-grid">
+                <div class="platform-card" onclick="window.location.href='/download/instagram'">
+                    <div class="platform-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <h3>Instagram</h3>
+                    <p>Download Instagram Reels, Stories, and posts in HD quality with audio.</p>
+                    <span class="btn btn-outline" style="border-color: var(--primary); color: var(--primary);">Download Now</span>
+                </div>
+                
+                <div class="platform-card" onclick="window.location.href='/download/tiktok'">
+                    <div class="platform-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <h3>TikTok</h3>
+                    <p>Save TikTok videos without watermark in multiple quality options.</p>
+                    <span class="btn btn-outline" style="border-color: var(--primary); color: var(--primary);">Download Now</span>
+                </div>
+                
+               <a href="Tools/youtube-downloader.html" class="platform-card">
+     <div class="platform-icon">
+        <i class="fab fa-youtube"></i>
+        </div>
+         <h3>YouTube</h3>
+          <p>Download YouTube videos in MP4, MP3, and other formats.</p>
+         <span class="btn btn-outline" style="border-color: var(--primary); color: var(--primary);">Download Now</span>
+     </a>
+                
+                <div class="platform-card" onclick="window.location.href='/download/facebook'">
+                    <div class="platform-icon">
+                        <i class="fab fa-facebook"></i>
+                    </div>
+                    <h3>Facebook</h3>
+                    <p>Save Facebook videos, stories, and reels in high quality.</p>
+                    <span class="btn btn-outline" style="border-color: var(--primary); color: var(--primary);">Download Now</span>
+                </div>
+                
+                <div class="platform-card" onclick="window.location.href='/download/twitter'">
+                    <div class="platform-icon">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <h3>Twitter</h3>
+                    <p>Download videos from Twitter with just one click.</p>
+                    <span class="btn btn-outline" style="border-color: var(--primary); color: var(--primary);">Download Now</span>
+                </div>
+                
+                <div class="platform-card" onclick="window.location.href='/download/whatsapp'">
+                    <div class="platform-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <h3>WhatsApp</h3>
+                    <p>Save videos shared on WhatsApp status and chats.</p>
+                    <span class="btn btn-outline" style="border-color: var(--primary); color: var(--primary);">Download Now</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Download videos in just 3 simple steps</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </div>
+                    <h3>1. Select Platform</h3>
+                    <p>Choose the social media platform you want to download from.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h3>2. Paste Link</h3>
+                    <p>Copy and paste the video URL in the downloader page.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>3. Download</h3>
+                    <p>Choose quality and download your video instantly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="trending" id="trending">
+        <div class="container">
+            <div class="section-title">
+                <h2>Trending Videos</h2>
+                <p>Most downloaded videos this week</p>
+            </div>
+            
+            <div class="videos-grid">
+                <div class="video-card" onclick="window.location.href='/download/youtube/dQw4w9WgXcQ'">
+                    <div class="video-thumbnail">
+                        <img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Video Thumbnail">
+                        <span class="video-platform">YouTube</span>
+                    </div>
+                    <div class="video-info">
+                        <h3>Never Gonna Give You Up - Rick Astley</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-eye"></i> 1.2M</span>
+                            <span><i class="far fa-clock"></i> 3:32</span>
+                        </div>
+                        <span class="download-badge">Download Now</span>
+                    </div>
+                </div>
+                
+                <div class="video-card" onclick="window.location.href='/download/youtube/9bZkp7q19f0'">
+                    <div class="video-thumbnail">
+                        <img src="https://i.ytimg.com/vi/9bZkp7q19f0/maxresdefault.jpg" alt="Video Thumbnail">
+                        <span class="video-platform">YouTube</span>
+                    </div>
+                    <div class="video-info">
+                        <h3>Gangnam Style - PSY</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-eye"></i> 980K</span>
+                            <span><i class="far fa-clock"></i> 4:12</span>
+                        </div>
+                        <span class="download-badge">Download Now</span>
+                    </div>
+                </div>
+                
+                <div class="video-card" onclick="window.location.href='/download/youtube/JGwWNGJdvx8'">
+                    <div class="video-thumbnail">
+                        <img src="https://i.ytimg.com/vi/JGwWNGJdvx8/maxresdefault.jpg" alt="Video Thumbnail">
+                        <span class="video-platform">YouTube</span>
+                    </div>
+                    <div class="video-info">
+                        <h3>Shape of You - Ed Sheeran</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-eye"></i> 850K</span>
+                            <span><i class="far fa-clock"></i> 3:53</span>
+                        </div>
+                        <span class="download-badge">Download Now</span>
+                    </div>
+                </div>
+                
+                <div class="video-card" onclick="window.location.href='/download/youtube/kJQP7kiw5Fk'">
+                    <div class="video-thumbnail">
+                        <img src="https://i.ytimg.com/vi/kJQP7kiw5Fk/maxresdefault.jpg" alt="Video Thumbnail">
+                        <span class="video-platform">YouTube</span>
+                    </div>
+                    <div class="video-info">
+                        <h3>Despacito - Luis Fonsi ft. Daddy Yankee</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-eye"></i> 790K</span>
+                            <span><i class="far fa-clock"></i> 4:41</span>
+                        </div>
+                        <span class="download-badge">Download Now</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Download Videos?</h2>
+            <p>Start downloading your favorite social media videos now - it's free, fast and easy!</p>
+            <a href="#platforms" class="btn btn-light"><i class="fas fa-download"></i> Choose Platform</a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>SocialMediaVideoDownloader</h3>
+                    <p>The fastest and easiest way to download videos from social media platforms.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Platforms</h3>
+                    <ul>
+                        <li><a href="/download/instagram">Instagram Downloader</a></li>
+                        <li><a href="/download/tiktok">TikTok Downloader</a></li>
+                        <li><a href="/download/youtube">YouTube Downloader</a></li>
+                        <li><a href="/download/facebook">Facebook Downloader</a></li>
+                        <li><a href="/download/twitter">Twitter Downloader</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">DMCA</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; <span id="current-year"></span> SocialMediaVideoDownloader. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            document.getElementById('main-nav').classList.toggle('active');
+        });
+        
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
